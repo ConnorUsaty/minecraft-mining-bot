@@ -1,0 +1,1 @@
+# minecraft-mining-bot
