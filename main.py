@@ -3,7 +3,7 @@ from time import sleep
 
 # Dict of keys and their corresponding actions (i.e. pressing "w" moves the character forward, pressing "a" makes the character attack)
 # Make sure these match the keybinds in the game
-actions = {"walkForward": "w", "walkBackward": "s", "attacking": "a"}
+actions = {"walkForward": "w", "walkBackward": "s", "attacking": "a", "turnLeft": "l"}
 
 
 def readyToStart():
@@ -32,7 +32,7 @@ def moveCharacter(key, duration, action="walking"):
 
 def lavaFound():
     try:
-        pos = pt.locateCenterOnScreen("images/lava.png", confidence=0.4)
+        pt.locateCenterOnScreen("images/lava.png", confidence=0.4)
     except:
         return False
     
@@ -44,13 +44,14 @@ def main():
     while not readyToStart():
         sleep(1)
 
-    # Main loop -> walk forward and mine until lava is found, then walk backwards
+    # Main loop -> walk forward and mine until lava is found -> walk backwards and turn left -> continue mining
     while True:
+        # If lava is found -> walk backwards and turn left -> then continue mining
         if lavaFound():
             moveCharacter(actions["walkBackward"], 2)
-            break
+            moveCharacter(actions["turnLeft"], 1)
 
-        moveCharacter(actions["walkForward"], 2, "attacking") # Walks forward and attacks (mines) for 2 seconds
+        moveCharacter(actions["walkForward"], 1, "attacking") # Walks forward and attacks (mines) for 2 seconds
 
 
 if __name__ == "__main__":
