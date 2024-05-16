@@ -44,13 +44,22 @@ def main():
     while not readyToStart():
         sleep(1)
 
+    # Track the number of consecutive left turns
+    consecLeftTurns = 0
+
     # Main loop -> walk forward and mine until lava is found -> walk backwards and turn left -> continue mining
     while True:
+        
         # If lava is found -> walk backwards and turn left -> then continue mining
         if lavaFound():
             moveCharacter(actions["walkBackward"], 2)
             moveCharacter(actions["turnLeft"], 1)
+            consecLeftTurns += 1
+            # Instead of turning left twice (180 degrees), and going down a path we already mined, we turn right so we can mine a new path
+            if consecLeftTurns == 2:
+                moveCharacter(actions["turnLeft"], 1)
 
+        consecLeftTurns = 0
         moveCharacter(actions["walkForward"], 1, "attacking") # Walks forward and attacks (mines) for 2 seconds
 
 
